@@ -21,8 +21,7 @@ Automatic Depression Detection (ADD) is a relatively nascent topic that first ap
     * [Model Architecture](#model-architecture-code)
     * [Training the Model](#training-the-model)  
     * [Results](#results)
-4. [Donate Your Data](#donate-your-data-code)
-5. [Future Directions](#future-directions)
+
 
 For a code walkthrough, see the [src](https://github.com/kykiefer/depression-detect/tree/master/src) folder.
 
@@ -151,31 +150,6 @@ As stated above, a majority vote across the 40 spectrograms per participant was 
 
 State of the emotion detection models exhibit AUC scores `~0.7` (my model had an AUC score of `0.58`), utilizing the lower level features alluded to. Although, this rapidly developed model is not yet at a predictive state for practical usage "as is", these results strongly suggest a promising, new direction for using spectrograms in depression detection.
 
-## Donate Your Data ([code](https://github.com/kykiefer/depression-detect/tree/master/web_app))
-The model needs your help! Detecting depression is *hard*. Robust speech recognition models rely on hundreds of hours of audio data. The good news is that *you* can contribute! Visit [DataStopsDepression.com](http://www.datastopsdepression.com/) to become a *data donor*! Your audio data will be incorporated in periodic model re-training with a batch algorithm.
-
-The donation process:
-1. Record a 40-second anonymized clip of yourself reading a provided paragraph and see a cool spectrogram of your audio recording!
-2. You will be prompted to complete an 8 question psychiatric survey.
-
-The [Flask](http://flask.pocoo.org/) app is hosted on an [AWS EC2](https://aws.amazon.com/ec2/) instance utilizing [S3](https://aws.amazon.com/s3/) for storage. The donation process is illustrated step-by-step in Figure 7 below.
-
-<kbd>
-  <img alt="DataStopsDepression.com homepage" src="images/website.gif" width='650'>
-</kbd>
-
-<sub><b>Figure 7: </b> [DataStopsDepression.com](http://www.datastopsdepression.com/) donation process. </sub>  
-
-## Future Directions
-I ultimately envision the model being implemented in a wearable device (Apple Watch, Garmin) or home device (Amazon Echo). The device could prompt you to answer a simple question in the morning and a simple question before bed on a daily basis. The model stores your predicted depression score and tracks it over time, such that the model can learn from your baseline (perhaps using a Bayesian approach). If a threshold is crossed, it notifies you to seek help, or in extreme cases, notifies an emergency contact to help you help yourself.
-
-This initial model provides a solid foundation and promising directions for detecting depression with spectrograms. Further work should train in more speakers. Low level audio transformations do a good job of reducing the noise in the data, which allows for robust models to be trained on smaller sample sizes. However, I still hypothesize they overlook subtleties in depressed speech.
-
-I would prioritize future efforts as follows:
-1. Sampling methods to increase training size without introducing class or speaker bias.
-2. Treating depression detection as a regression problem (see below).
-3. Introducing network recurrence ([LSTM](http://blog.echen.me/2017/05/30/exploring-lstms/)).
-4. Incorporate Vocal Tract Length Perturbation ([VTLP](http://www.cs.toronto.edu/~ndjaitly/jaitly-icml13.pdf)).
 
 Depression moves across a spectrum, so deriving a binary classification (depressed, not depressed) from a single test (PHQ-8) is somewhat naïve and perhaps unrealistic. The threshold for a depression classification was a score of 10, but how much difference in depression-related speech prosody exists between a score of 9 (classified as not depressed) and a 10 (classified as depressed)? For this reason, the problem may be better approached by using regression techniques to predict participants' PHQ-8 scores and scoring the model based on [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation).
 
@@ -183,14 +157,11 @@ Depression moves across a spectrum, so deriving a binary classification (depress
 
 <sub><b>Figure 8: </b> Distribution of PHQ-8 scores. </sub>
 
-I'm currently excited about the results and will be monitoring pull requests. However, accessing the DAIC-WOZ Database requires signing an agreement form, which can be found [here](http://dcapswoz.ict.usc.edu/). To download the 92GB of zip files `cd` into your desired directory and run the following in your shell. Follow the [code walkthrough](https://github.com/kykiefer/depression-detect/tree/master/src) to get set up for analysis.
 
 ```shell
 wget -r -np -nH --cut-dirs=3 -R index.html --user=daicwozuser --ask-password  http://dcapswoz.ict.usc.edu/wwwdaicwoz/
 ```
 
-## Tech Stack
-<img alt="Tech stack" src="images/tech_stack.png" width='1200'>
 
 ## References
     1. Gratch, Artstein, Lucas, Stratou, Scherer, Nazarian, Wood, Boberg, DeVault, Marsella, Traum. The Distress Analysis Interview Corpus of human and computer interviews. InLREC 2014 May (pp. 3123-3128).
