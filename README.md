@@ -1,5 +1,7 @@
-# *DepressionDetect*
-This effort addresses an automated device for detecting depression from acoustic features in speech.  The tool is aimed at lowering the barrier of entry in seeking help for potential mental illness and supporting medical professionals' diagnoses.
+**Detecting Depression with Audio Features**
+
+
+This effort addresses an automated device for detecting depression from acoustic features in speech.  The tool is aimed at lowering the barrier of entry (especially for clinically marginalized communities) in seeking help for potential mental illness and supporting medical professionals' diagnoses.
 
 Early detection and treatment of depression is essential in promoting remission, preventing relapse, and reducing the emotional burden of the disease. Current diagnoses are primarily subjective, inconsistent across professionals, and expensive for the individual who may be in dire need of help. Additionally, early signs of depression are difficult to detect and quantify.  These early signs have a promising potential to be quantified by machine learning algorithms that could be implemented in a wearable artificial intelligence (AI) or home device.
 
@@ -35,9 +37,7 @@ A representative transcribed interview excerpt is seen below:
 
 > **Participant:** Yeah, he is a uh. He’s a very he’s a man of few words. And uh he's very calm. Slow to anger. And um very warm very loving man. Responsible. And uh he’s a gentleman has a great sense of style and he’s a great cook.
 
-<img alt="Virtual interview with Ellie" src="images/interview_with_ellie.png" width='400'>
 
-<sub><b>Figure 1: </b> Virtual interview with Ellie. </sub>  
 
 ## Acoustic Features of Speech
 While some emotion detection research focuses on the semantic content of audio signals in predicting depression, I decided to focus on the [prosodic](http://clas.mq.edu.au/speech/phonetics/phonology/intonation/prosody.html)  features, which have also been found to be promising predictors of depression. Prosodic features can be generally characterized by a listener as pitch, tone, rhythm, stress, voice quality, articulation, intonation, etc. Encouraging features in research include sentence length and rhythm, intonation, fundamental frequency, and Mel-frequency cepstral coefficients ([MFCCs](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum)).<sup>[2](#references)</sup>
@@ -193,10 +193,12 @@ wget -r -np -nH --cut-dirs=3 -R index.html --user=daicwozuser --ask-password  ht
 ## References
     1. Gratch, Artstein, Lucas, Stratou, Scherer, Nazarian, Wood, Boberg, DeVault, Marsella, Traum. The Distress Analysis Interview Corpus of human and computer interviews. InLREC 2014 May (pp. 3123-3128).
     2. Girard, Cohn. Automated Depression Analysis. Curr Opin Psychol. 2015 August; 4: 75–79.
-    3. Ma, Yang, Chen, Huang, and Wang. DepAudioNet: An Efficient Deep Model for Audio based Depression Classification. ACM International Conference on Multimedia (ACM-MM) Workshop: Audio/Visual Emotion Challenge (AVEC), 2016.
+    3. Ma, Yang, Chen, Huang, and Wang. DepAudioNet: An Efficient Deep Model for Audio based Depression Classification. ACM International Conference on Multimedia (ACM-MM)
+ Workshop: Audio/Visual Emotion Challenge (AVEC), 2016.
     4. Giannakopoulos, Aggelos. Introduction to audio analysis: a MATLAB approach. Oxford: Academic Press, 2014.
     5. Piczak. Environmental Sound Classification with Convolutional Neural Networks. Institute of Electronic System, Warsaw University of Technology, 2015.
 
 ## Code References
     1. http://yerevann.github.io/2015/10/11/spoken-language-identification-with-deep-convolutional-networks
     2. http://www.frank-zalkow.de/en/code-snippets/create-audio-spectrograms-with-python.html
+    3. https://github.com/kykiefer/depression-detect
