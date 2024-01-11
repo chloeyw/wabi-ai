@@ -1,5 +1,5 @@
-**WABI AI: Transforming Mental Health, One Voice at a Time
-**
+**WABI AI: Transforming Mental Health, One Voice at a Time**
+
 **Detecting Depression with Audio Features**
 
 
