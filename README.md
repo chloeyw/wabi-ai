@@ -23,7 +23,7 @@ Automatic Depression Detection (ADD) is a relatively nascent topic that first ap
     * [Results](#results)
 
 
-For a code walkthrough, see the [src](https://github.com/kykiefer/depression-detect/tree/master/src) folder.
+For a code walkthrough, see the [src](https://github.com//depression-detect/tree/master/src) folder.
 
 ## Dataset
 All audio recordings and associated depression metrics were provided by the [DAIC-WOZ Database](http://dcapswoz.ict.usc.edu/), which was compiled by USC's Institute of Creative Technologies and released as part of the 2016 Audio/Visual Emotional Challenge and Workshop ([AVEC 2016](http://sspnet.eu/avec2016/)). The dataset consists of 189 sessions, averaging 16 minutes, between a participant and virtual interviewer called Ellie, controlled by a human interviewer in another room via a "[Wizard of Oz](https://en.wikipedia.org/wiki/Wizard_of_Oz_experiment)" approach. Prior to the interview, each participant completed a psychiatric questionnaire ([PHQ-8](http://patienteducation.stanford.edu/research/phq.pdf)), from which a binary "truth" classification (depressed, not depressed) was derived.
@@ -43,10 +43,10 @@ A representative transcribed interview excerpt is seen below:
 ## Acoustic Features of Speech
 While some emotion detection research focuses on the semantic content of audio signals in predicting depression, I decided to focus on the [prosodic](http://clas.mq.edu.au/speech/phonetics/phonology/intonation/prosody.html)  features, which have also been found to be promising predictors of depression. Prosodic features can be generally characterized by a listener as pitch, tone, rhythm, stress, voice quality, articulation, intonation, etc. Encouraging features in research include sentence length and rhythm, intonation, fundamental frequency, and Mel-frequency cepstral coefficients ([MFCCs](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum)).<sup>[2](#references)</sup>
 
-### Segmentation ([code](https://github.com/kykiefer/depression-detect/blob/master/src/data/segmentation.py))
+### Segmentation 
 The first step in analyzing a person's prosodic features of speech is segmenting the person's speech from silence, other speakers, and noise. Fortunately, the participants in the DAIC-WOZ study were wearing close proximity microphones in low noise environments, which allowed for fairly complete segmentation in 84% of interviews using [pyAudioAnanlysis'](https://github.com/tyiannak/pyAudioAnalysis) segmentation module. When implementing the algorithm in a wearable device, [speaker diarization](https://en.wikipedia.org/wiki/Speaker_diarisation)  (speaker identification) and background noise removal would require further development for a more robust product.  However, in the interest of quickly establishing a minimum viable product, this desired further development was not addressed in the current effort.
 
-### Feature Extraction ([code](https://github.com/kykiefer/depression-detect/blob/master/src/features/spectrograms.py))
+### Feature Extraction 
 There are several ways to approach acoustic feature extraction, which is the most critical component to building a successful approach. One method includes extracting short-term and mid-term audio features such as MFCCs, [chroma vectors](https://en.wikipedia.org/wiki/Chroma_feature), [zero crossing rate](https://en.wikipedia.org/wiki/Zero-crossing_rate), etc. and feeding them as inputs to a Support Vector Machine (SVM) or Random Forest. Since pyAudioAnalysis makes short-term feature extraction fairly streamlined, my first approach to this classification problem involved building short-term feature matrices from 50ms audio segments of the [34 short-term features](https://github.com/tyiannak/pyAudioAnalysis/wiki/3.-Feature-Extraction) available from pyAudioAnalysis.  Since these features are lower level representations of audio, the concern arises that subtle speech characteristics displayed by depressed individuals would go undetected.
 
 Running a Random Forest on the 34 short-term features yielded an encouraging [F1 score](https://en.wikipedia.org/wiki/F1_score) of `0.59`, with minimal tuning. This approach has been previously employed by others, so I treated this as "baseline" comparative data for which to develop and evaluate a completely new approach involving convolutional neural networks (CNNs) with spectrograms, which I felt could be quite promising and powerful.
@@ -76,7 +76,7 @@ The CNN begins by learning features like vertical lines, but in subsequent layer
 
 However, with the highly detailed representations of speech provided in spectrograms, false noise signals (ambient noise, plosives, unsegmented audio from other speakers, etc.) can be inconveniently picked up by the network. One can mitigate this noise with different regularization parameters in the network (pooling layers, L1 loss functions, dropout, etc.), but unless your training data is abundant, it is challenging for the network to distinguish real predictors of depression from the false signal.
 
-### Class Imbalance ([code](https://github.com/kykiefer/depression-detect/blob/master/src/features/random_sampling.py))
+### Class Imbalance 
 In the current dataset, the number of non-depressed subjects is about four times larger than that of depressed ones, which can introduce a classification "non-depressed" bias. Additional bias can occur due to the considerable range of interview durations from 7-33 minutes because a larger volume of signal from an individual may emphasize some characteristics that are person specific.
 
 In an attempt to address these issues, each of the participant's segmented spectrograms were cropped into 4-second slices. Next, participants were randomly sampled in 50/50 proportion from each class (depressed, not depressed). Then, a fixed number of slices were sampled from each of the selected participants to ensure the CNN has an equal interview duration for each participant. This drastically reduced the training dataset size to 3 hours from the original 35 hours of segmented audio, which was felt adequate for this exploratory analysis.
@@ -85,7 +85,7 @@ It should be noted a few different sampling methods were explored to try to incr
 
 <sup>**6/21/2017 update:** The need for class balancing on binary classification problems, where class probabilities are assigned by the model, is somewhat disputed. See questions posed on Cross Validated [[1](https://stats.stackexchange.com/questions/283170/when-is-unbalanced-data-really-a-problem-in-machine-learning), [2](https://stats.stackexchange.com/questions/247871/what-is-the-root-cause-of-the-class-imbalance-problem)].</sup>
 
-### Model Architecture ([code](https://github.com/kykiefer/depression-detect/blob/master/src/features/cnn.py))
+### Model Architecture 
 A 6-layer convolutional neural network (CNN) model was employed consisting of 2 convolutional layers with max-pooling and 2 fully connected layers. Each spectrogram input is an image with dimension 513x125 representing 4 seconds of audio and frequencies ranging from 0 to 8kHz. The frequency range was tuned as a hyperparameter, since most human speech energy is concentrated between 0.3-3kHz. Each input is normalized according to decibels relative to full scale (dBFS).
 
 Though there are some differences, the actual architecture employed in this effort was largely inspired by a paper on Environmental Sound Classification with CNNs.<sup>[5](#references)</sup> The network architecture employed in this paper is shown in Figure 4, with *DepressionDetect's* architecture displayed in Figure 5.
@@ -174,4 +174,4 @@ wget -r -np -nH --cut-dirs=3 -R index.html --user=daicwozuser --ask-password  ht
 ## Code References
     1. http://yerevann.github.io/2015/10/11/spoken-language-identification-with-deep-convolutional-networks
     2. http://www.frank-zalkow.de/en/code-snippets/create-audio-spectrograms-with-python.html
-    3. https://github.com/kykiefer/depression-detect
+    3. https://github.com//depression-detect
