@@ -174,4 +174,4 @@ wget -r -np -nH --cut-dirs=3 -R index.html --user=daicwozuser --ask-password  ht
 ## Code References
     1. http://yerevann.github.io/2015/10/11/spoken-language-identification-with-deep-convolutional-networks
     2. http://www.frank-zalkow.de/en/code-snippets/create-audio-spectrograms-with-python.html
-    3. https://github.com//depression-detect
+    3. https://github.com/kykiefer/depression-detect
